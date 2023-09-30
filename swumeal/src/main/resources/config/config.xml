@@ -3,5 +3,8 @@
 <configuration>
     <typeAliases>
         <typeAlias type="com.swumeal.app.domain.vo.MenuVO" alias="menuVO"/>
+        <typeAlias type="com.swumeal.app.domain.vo.MenuItemVO" alias="menuItemVO"/>
+        <typeAlias type="com.swumeal.app.domain.dto.MenuDTO" alias="menuDTO"/>
     </typeAliases>
+
 </configuration>

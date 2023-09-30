@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.swumeal.app.mapper.MenuMapper">
-    <select id="select" resultType="menuVO">
-
+    <select id="select" resultType="menuDTO">
+        SELECT m.id, m.MEAL_DATE, m.MEAL_TYPE, m.CORNER, m."TIME", mi.MENU_NAME
+        FROM MENU m, MENU_ITEM mi
+        WHERE m.ID = mi.MENU_ID AND TRUNC(MEAL_DATE) = TRUNC(SYSDATE)
     </select>
+
+    <select id="selectAll" resultType="menuDTO">
+  <![CDATA[
+        SELECT m.id, m.MEAL_DATE, m.MEAL_TYPE, m.CORNER, m."TIME", mi.MENU_NAME
+        FROM MENU m, MENU_ITEM mi
+        WHERE m.ID = mi.MENU_ID AND MEAL_DATE >= TRUNC(sysdate, 'D')
+          AND MEAL_DATE <= TRUNC(sysdate, 'D') + 5
+        ]]>
+</select>
 </mapper>
