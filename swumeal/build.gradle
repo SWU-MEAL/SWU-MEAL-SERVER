@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.app'
 version = '1.0'
-sourceCompatibility = '11'
+sourceCompatibility = "17"
 
 configurations {
     compileOnly {
@@ -38,3 +38,5 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+targetCompatibility = JavaVersion.VERSION_17
