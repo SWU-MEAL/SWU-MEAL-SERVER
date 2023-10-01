@@ -1,6 +1,6 @@
 package com.swumeal.app.domain.menu.service;
 
-import com.swumeal.app.domain.menu.dao.MenuDAO;
+import com.swumeal.app.dao.MenuDAO;
 import com.swumeal.app.domain.menu.vo.StaffMenuVo;
 import com.swumeal.app.domain.vo.MenuItemVO;
 import com.swumeal.app.domain.vo.MenuVO;
