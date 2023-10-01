@@ -1,5 +1,6 @@
 package com.swumeal.app.global.error.handler;
 
+import com.swumeal.app.domain.menu.error.exception.DataUploadException;
 import com.swumeal.app.global.common.response.ResponseDto;
 import com.swumeal.app.global.error.GlobalErrorCode;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,17 @@ import java.io.IOException;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+    // DataUploadException
+    @ExceptionHandler(DataUploadException.class)
+    public ResponseEntity<ResponseDto> exceptionHandler(DataUploadException e) {
+        HttpStatus httpStatus = e.getErrorCode().getHttpStatus();
+        String message = e.getMessage();
+
+        e.printStackTrace();
+
+        return ResponseEntity.status(httpStatus.value()).body(ResponseDto.of(httpStatus.value(), message));
+    }
+
     // IOException
     @ExceptionHandler(value = IOException.class)
     public ResponseEntity<ResponseDto> exceptionHandler(IOException e) {
