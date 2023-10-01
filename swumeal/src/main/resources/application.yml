@@ -1,15 +1,23 @@
-#server
+# server
 server:
   port: 10000
   servlet:
     session:
       tracking-modes: cookie
 
-#MyBatis
+
 spring:
+  # MyBatis
   datasource:
     hikari:
       driver-class-name: oracle.jdbc.OracleDriver
       jdbc-url: jdbc:oracle:thin:@//localhost:1521/XE
       username: swu
       password: swu
+  # Thymeleaf
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    cache: false
+    check-template-location: true

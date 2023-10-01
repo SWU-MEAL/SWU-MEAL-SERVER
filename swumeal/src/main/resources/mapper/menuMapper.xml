@@ -1,12 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.swumeal.app.mapper.MenuMapper">
+  <insert id="insertMenu" parameterType="com.swumeal.app.domain.vo.MenuVO" keyProperty="id">
+        <selectKey keyProperty="id" order="BEFORE" resultType="long">
+            select SEQ_MENU.nextval from dual
+        </selectKey>
+        INSERT INTO MENU(id, meal_date, meal_type, corner, time)
+        VALUES (#{id}, TO_DATE(#{mealDate}, 'yyyy-mm-dd'), #{mealType}, #{corner, jdbcType = VARCHAR}, #{time})
+    </insert>
+    <insert id="insertMenuItem" parameterType="com.swumeal.app.domain.vo.MenuItemVO" useGeneratedKeys="true"
+            keyProperty="id">
+        <selectKey keyProperty="id" order="BEFORE" resultType="long">
+            select SEQ_MENU_ITEM.nextval from dual
+        </selectKey>
+        INSERT INTO MENU_ITEM(id, menu_id, menu_name)
+        VALUES (#{id}, #{menuId}, #{menuName})
+    </insert>
     <select id="select" resultType="menuDTO">
         SELECT m.id, m.MEAL_DATE, m.MEAL_TYPE, m.CORNER, m."TIME", mi.MENU_NAME
         FROM MENU m, MENU_ITEM mi
         WHERE m.ID = mi.MENU_ID AND TRUNC(MEAL_DATE) = TRUNC(SYSDATE)
-    </select>
-
+  </select>
     <select id="selectAll" resultType="menuDTO">
   <![CDATA[
         SELECT m.id, m.MEAL_DATE, m.MEAL_TYPE, m.CORNER, m."TIME", mi.MENU_NAME
