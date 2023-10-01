@@ -4,4 +4,19 @@
     <select id="select" resultType="menuVO">
 
     </select>
+    <insert id="insertMenu" parameterType="com.swumeal.app.domain.vo.MenuVO" keyProperty="id">
+        <selectKey keyProperty="id" order="BEFORE" resultType="long">
+            select SEQ_MENU.nextval from dual
+        </selectKey>
+        INSERT INTO MENU(id, meal_date, meal_type, corner, time)
+        VALUES (#{id}, TO_DATE(#{mealDate}, 'yyyy-mm-dd'), #{mealType}, #{corner, jdbcType = VARCHAR}, #{time})
+    </insert>
+    <insert id="insertMenuItem" parameterType="com.swumeal.app.domain.vo.MenuItemVO" useGeneratedKeys="true"
+            keyProperty="id">
+        <selectKey keyProperty="id" order="BEFORE" resultType="long">
+            select SEQ_MENU_ITEM.nextval from dual
+        </selectKey>
+        INSERT INTO MENU_ITEM(id, menu_id, menu_name)
+        VALUES (#{id}, #{menuId}, #{menuName})
+    </insert>
 </mapper>
