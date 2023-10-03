@@ -38,3 +38,6 @@ out/
 
 ### Test File ###
 file.xlsx
+
+### Secret ###
+application.properties

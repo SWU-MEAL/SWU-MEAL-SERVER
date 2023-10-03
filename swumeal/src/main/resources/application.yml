@@ -11,9 +11,9 @@ spring:
   datasource:
     hikari:
       driver-class-name: oracle.jdbc.OracleDriver
-      jdbc-url: jdbc:oracle:thin:@//localhost:1521/XE
-      username: swu
-      password: swu
+      jdbc-url: jdbc:oracle:thin:@//${DATABASE_URL}
+      username: ${DATABASE_USER}
+      password: ${DATABASE_PASSWORD}
   # Thymeleaf
   thymeleaf:
     prefix: classpath:/templates/
