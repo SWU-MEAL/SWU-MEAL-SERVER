@@ -21,6 +21,7 @@ class MenuApiTest {
     MockMvc mockMvc;
 
     @Test
+    @DisplayName("findByDate API test")
     void findByDate() throws Exception {
         // given
         String query = "date";
@@ -32,6 +33,22 @@ class MenuApiTest {
                         .param(query, date))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("data.date").exists())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("findByTime API test")
+    void findByTime() throws Exception {
+        // given
+        String query = "time";
+        String time = "l";
+        String url = "/v1/menu/today";
+
+        // when, then
+        mockMvc.perform(MockMvcRequestBuilders.get(url)
+                        .param(query, time))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("data.time").exists())
                 .andDo(print());
     }
 }
