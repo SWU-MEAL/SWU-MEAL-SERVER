@@ -2,6 +2,7 @@ package com.swumeal.app.mapper;
 
 import com.swumeal.app.domain.dto.MenuDTO;
 import com.swumeal.app.domain.menu.dto.MenuListByDateDto;
+import com.swumeal.app.domain.menu.dto.MenuListByTimeDto;
 import com.swumeal.app.domain.vo.MenuItemVO;
 import com.swumeal.app.domain.vo.MenuVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -24,4 +25,7 @@ public interface MenuMapper {
 
     // 날짜 기준 슈밥 조회
     MenuListByDateDto selectByDate(String date);
+
+    // 시간 기준 슈밥 조회
+    MenuListByTimeDto selectByTime(String time);
 }

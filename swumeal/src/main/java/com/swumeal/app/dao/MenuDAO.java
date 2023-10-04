@@ -2,6 +2,7 @@ package com.swumeal.app.dao;
 
 import com.swumeal.app.domain.dto.MenuDTO;
 import com.swumeal.app.domain.menu.dto.MenuListByDateDto;
+import com.swumeal.app.domain.menu.dto.MenuListByTimeDto;
 import com.swumeal.app.domain.vo.MenuItemVO;
 import com.swumeal.app.domain.vo.MenuVO;
 import com.swumeal.app.mapper.MenuMapper;
@@ -38,5 +39,10 @@ public class MenuDAO {
     // 날짜 기준 슈밥
     public MenuListByDateDto findByDate(String date) {
         return menuMapper.selectByDate(date);
+    }
+
+    // 시간 기준 슈밥
+    public MenuListByTimeDto findByTime(String time) {
+        return menuMapper.selectByTime(time);
     }
 }
