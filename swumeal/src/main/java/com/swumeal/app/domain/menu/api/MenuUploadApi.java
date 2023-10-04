@@ -15,9 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.LinkedList;
 
-@Slf4j
-@RequiredArgsConstructor
 @Controller
+@RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/v1/upload")
 public class MenuUploadApi {
     private final FileUploadService fileUploadService;
