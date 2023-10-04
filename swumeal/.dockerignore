@@ -1,0 +1,5 @@
+.idea
+.gitignore
+.dockerignore
+*.log
+application.properties
