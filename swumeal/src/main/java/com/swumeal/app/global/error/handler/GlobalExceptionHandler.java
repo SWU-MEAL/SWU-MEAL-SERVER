@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -53,16 +54,33 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.internalServerError().body(ResponseDto.of(httpStatus.value(), message));
     }
 
-    // MethodNotAllowed
+    // MethodArgumentNotValidException
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException e, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        HttpStatus httpStatus = GlobalErrorCode.INVALID_VALUE.getHttpStatus();
+        String message = e.getMessage();
+
+        if (message.contains("date"))
+            message = GlobalErrorCode.INVALID_DATE_FORMAT.getMessage();
+        else if (message.contains("time"))
+            message = GlobalErrorCode.INVALID_TIME_FORMAT.getMessage();
+
+        e.printStackTrace();
+
+        return ResponseEntity.status(httpStatus.value()).body(ResponseDto.of(httpStatus.value(), message));
+
+    }
+
+    // MethodNotAllowed
+    @Override
+    public ResponseEntity<Object> handleHttpRequestMethodNotSupported(
+            HttpRequestMethodNotSupportedException e, HttpHeaders headers, HttpStatus status, WebRequest request) {
         HttpStatus httpStatus = GlobalErrorCode.METHOD_NOT_ALLOWED.getHttpStatus();
         String message = e.getMessage();
 
         e.printStackTrace();
 
         return ResponseEntity.status(httpStatus.value()).body(ResponseDto.of(httpStatus.value(), message));
-
     }
 
     // InternalServerError
