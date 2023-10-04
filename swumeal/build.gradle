@@ -6,6 +6,7 @@ plugins {
 
 jar {
     enabled = false
+    processResources.exclude("**/application.properties")
 }
 
 group = 'com.app'
