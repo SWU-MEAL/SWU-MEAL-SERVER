@@ -1,7 +1,8 @@
 package com.swumeal.app.domain.menu.api;
 
-import com.swumeal.app.domain.menu.dto.DateRequestDto;
 import com.swumeal.app.domain.menu.dto.MenuListByDateDto;
+import com.swumeal.app.domain.menu.dto.MenuListByTimeDto;
+import com.swumeal.app.domain.menu.dto.request.DateRequestDto;
 import com.swumeal.app.domain.menu.service.MenuReadService;
 import com.swumeal.app.global.common.response.DataResponseDto;
 import com.swumeal.app.global.common.response.ResponseDto;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,5 +29,12 @@ public class MenuApi {
         MenuListByDateDto menuListByDateDto = menuReadService.findByDate(date);
 
         return ResponseEntity.ok(DataResponseDto.of(menuListByDateDto, 200));
+    }
+
+    @GetMapping("/today")
+    public ResponseEntity<ResponseDto> findByTime(@RequestParam @NotBlank String time) {
+        MenuListByTimeDto menuListByTimeDto = menuReadService.findByTime(time);
+
+        return ResponseEntity.ok(DataResponseDto.of(menuListByTimeDto, 200));
     }
 }
