@@ -48,26 +48,21 @@
             </collection>
         </collection>
     </resultMap>
-    <!--
-    <resultMap id="dailyMenuList" type="DailyMenuListDto">
-        <result property="time" column="TIME"/>
-        <collection property="menuList" column="ID" select="dailyMenu"/>
-    </resultMap>
-    <resultMap id="dailyMenu" type="DailyMenuDto">
-        <id property="menuId" column="id"/>
-        <result property="type" column="MEAL_TYPE"/>
-        <result property="corner" column="CORNER"/>
-        <collection property="items" column="ID" select="items"/>
-    </resultMap>
-    <resultMap id="items" type="String">
-        <result column="MENU_NAME"/>
-    </resultMap>
-    -->
     <select id="selectByDate" parameterType="String" resultMap="menuByDate">
-        SELECT m.ID, TO_CHAR(m.MEAL_DATE, 'YYYY-MM-DD') AS MEAL_DATE, m.MEAL_TYPE, m.CORNER, m."TIME", mi.MENU_NAME
+        SELECT m.ID,
+               TO_CHAR(m.MEAL_DATE, 'YYYY-MM-DD') AS MEAL_DATE,
+               m.MEAL_TYPE,
+               m.CORNER,
+               m."TIME",
+               mi.MENU_NAME,
+               CASE
+                   WHEN m.time = '조식' THEN 1
+                   WHEN m.time = '중식' THEN 2
+                   ELSE 3
+                   END                            AS time_order
         FROM MENU m
                  LEFT JOIN MENU_ITEM mi ON m.ID = mi.MENU_ID
         WHERE m.MEAL_DATE = TO_DATE(#{date})
-        ORDER BY m.ID, mi.ID
+        ORDER BY time_order, m.ID, mi.ID
     </select>
 </mapper>
