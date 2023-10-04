@@ -1,4 +1,4 @@
-package com.swumeal.app.domain.menu.dto;
+package com.swumeal.app.domain.menu.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
