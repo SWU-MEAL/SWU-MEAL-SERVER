@@ -22,7 +22,7 @@
         FROM MENU m,
              MENU_ITEM mi
         WHERE m.ID = mi.MENU_ID
-          AND TRUNC(MEAL_DATE) = TRUNC(SYSDATE)
+          AND TRUNC(MEAL_DATE) = TRUNC(CURRENT_DATE)
     </select>
     <select id="selectAll" resultType="menuDTO">
   <![CDATA[
@@ -30,8 +30,8 @@
         FROM MENU m,
              MENU_ITEM mi
         WHERE m.ID = mi.MENU_ID
-          AND MEAL_DATE >= TRUNC(sysdate, 'D')
-          AND MEAL_DATE <= TRUNC(sysdate, 'D') + 5
+          AND MEAL_DATE >= TRUNC(CURRENT_DATE, 'D')
+          AND MEAL_DATE <= TRUNC(CURRENT_DATE, 'D') + 5
         ]]>
     </select>
     <resultMap id="menuByDate" type="menuListByDateDto">
