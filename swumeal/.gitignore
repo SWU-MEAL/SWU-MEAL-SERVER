@@ -38,6 +38,7 @@ out/
 
 ### Test File ###
 file.xlsx
+file2.xlsx
 
 ### Secret ###
 application.properties
