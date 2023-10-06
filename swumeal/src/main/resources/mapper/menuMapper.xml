@@ -62,7 +62,7 @@
                    END                            AS time_order
         FROM MENU m
                  LEFT JOIN MENU_ITEM mi ON m.ID = mi.MENU_ID
-        WHERE m.MEAL_DATE = TO_DATE(#{date})
+        WHERE m.MEAL_DATE = TO_DATE(#{date}, 'RR/MM/DD')
         ORDER BY time_order, m.ID, mi.ID
     </select>
     <resultMap id="menuByTime" type="menuListByTimeDto">
