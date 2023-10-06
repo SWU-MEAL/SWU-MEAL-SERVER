@@ -1,7 +1,7 @@
 package com.swumeal.app.domain.menu.api;
 
 import com.swumeal.app.domain.menu.service.FileUploadService;
-import com.swumeal.app.domain.menu.vo.StaffMenuVo;
+import com.swumeal.app.domain.menu.vo.MenuDataVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -28,8 +28,9 @@ public class MenuUploadApi {
     }
 
     @PostMapping("/result")
-    public String fileUploadResult(@RequestParam("file") MultipartFile file, Model model) throws IOException {
-        LinkedList<StaffMenuVo> result = fileUploadService.uploadData(file);
+    public String fileUploadResult(@RequestParam("file") MultipartFile file, @RequestParam("type") String type, Model model) throws IOException {
+        LinkedList<MenuDataVo> result = fileUploadService.uploadData(file, type);
+        model.addAttribute("type", type);
         model.addAttribute("result", result);
 
         return "result";

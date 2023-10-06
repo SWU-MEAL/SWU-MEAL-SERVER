@@ -2,7 +2,10 @@ package com.swumeal.app.global.util;
 
 import com.swumeal.app.domain.menu.error.MenuErrorCode;
 import com.swumeal.app.domain.menu.error.exception.DataUploadException;
-import com.swumeal.app.domain.menu.vo.StaffMenuVo;
+import com.swumeal.app.domain.menu.vo.MenuDataVo;
+import com.swumeal.app.domain.model.CornerEnum;
+import com.swumeal.app.domain.model.MealTypeEnum;
+import com.swumeal.app.domain.model.TimeEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -23,37 +26,89 @@ import java.util.LinkedList;
 @Component
 @RequiredArgsConstructor
 public class UploadedFileProcessor {
-    public LinkedList<StaffMenuVo> readExcelFile(Workbook workbook) {
-        final int START_ROW_NUM = 4;
-        final int START_CELL_NUM = 2;
-        final int REDUNDANT_ROW_COUNT = 3;
+    public boolean isBlankCell(Cell cell) {
+        if (cell == null)
+            return true;
 
-        Sheet worksheet = workbook.getSheetAt(0);
-        int endRowNum = worksheet.getPhysicalNumberOfRows() - REDUNDANT_ROW_COUNT;
-        LinkedList<StaffMenuVo> result = new LinkedList<>();
+        return cell.toString().isBlank();
+    }
 
-        // 날짜 기준 데이터 추출
-        for (int l = START_CELL_NUM; l < START_CELL_NUM + 5; l++) {
+    public int getRowCount(TimeEnum time, CornerEnum corner) {
+        if (time.equals(TimeEnum.BREAKFAST)) return 6;
+        else if (time.equals(TimeEnum.DINNER)) return 7;
+        else {
+            if (corner == null)
+                return 7;
+
+            // 중식 -> 코너 기준 분류
+            return corner.getRowCount();
+        }
+    }
+
+    public LinkedList<MenuDataVo> getData(Date date, Sheet worksheet, MealTypeEnum type, TimeEnum time, int firstRow, int cellNum) {
+        LinkedList<MenuDataVo> result = new LinkedList<>();
+        final int MENU_COUNT = type.equals(MealTypeEnum.DORMITORY) && time.equals(TimeEnum.LUNCH) ? 3 : 1;
+        int startRow = firstRow;
+
+        for (int i = 0; i < MENU_COUNT; i++) {
             // 데이터 미존재 (공휴일 등)
-            Cell cell = worksheet.getRow(START_ROW_NUM).getCell(l);
-            if (cell == null || cell.toString().isEmpty())
+            Cell cell = worksheet.getRow(startRow + 2).getCell(cellNum);
+            if (isBlankCell(cell))
                 continue;
 
-            // 날짜
-            Date date = worksheet.getRow(START_ROW_NUM - 1).getCell(l).getDateCellValue();
+            // Corner
+            CornerEnum corner = null;
+            if (MENU_COUNT == 3) {
+                cell = worksheet.getRow(startRow++).getCell(cellNum);
+                corner = cell.toString().contains("한식코너") ? CornerEnum.KOREAN : (cell.toString().contains("일품코너") ? CornerEnum.SPECIAL : CornerEnum.SNACK);
+            }
 
             // 메뉴 아이템
+            int rowCount = getRowCount(time, corner);
             ArrayList<String> items = new ArrayList<>();
-            for (int i = START_ROW_NUM; i < endRowNum; i++)
-                items.add(worksheet.getRow(i).getCell(l).toString());
+            for (int l = startRow; l < startRow + rowCount; l++) {
+                cell = worksheet.getRow(l).getCell(cellNum);
+                if (!isBlankCell(cell))
+                    items.add(cell.toString().trim());
+            }
 
-            result.add(new StaffMenuVo(date, items));
+            result.add(MenuDataVo.builder()
+                    .date(date)
+                    .time(time)
+                    .type(type)
+                    .corner(corner)
+                    .items(items)
+                    .build());
+
+            // 시작 행 업데이트
+            startRow += rowCount;
         }
 
         return result;
     }
 
-    public LinkedList<StaffMenuVo> readFile(MultipartFile file) throws DataUploadException, IOException {
+    public LinkedList<MenuDataVo> readExcel(Workbook workbook, MealTypeEnum type) {
+        final int START_CELL_NUM = 2;
+        final int START_ROW_NUM = type.equals(MealTypeEnum.DORMITORY) ? 2 : 3;
+        Sheet worksheet = workbook.getSheetAt(0);
+        LinkedList<MenuDataVo> result = new LinkedList<>();
+        TimeEnum[] timeList = {TimeEnum.BREAKFAST, TimeEnum.LUNCH, TimeEnum.DINNER};
+
+        for (int i = START_CELL_NUM; i < START_CELL_NUM + 5; i++) {
+            Date date = worksheet.getRow(START_ROW_NUM).getCell(i).getDateCellValue();
+            if (type.equals(MealTypeEnum.DORMITORY)) {
+                for (TimeEnum time : timeList)
+                    result.addAll(getData(date, worksheet, type, time, time.getDormStartRow(), i));
+
+            } else {
+                result.addAll(getData(date, worksheet, type, timeList[1], 4, i));
+            }
+        }
+
+        return result;
+    }
+
+    public LinkedList<MenuDataVo> readFile(MultipartFile file, MealTypeEnum type) throws DataUploadException, IOException {
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
 
         if (extension == null)
@@ -61,10 +116,10 @@ public class UploadedFileProcessor {
 
         switch (extension) {
             case "xlsx" -> {
-                return readExcelFile(new XSSFWorkbook(file.getInputStream()));
+                return readExcel(new XSSFWorkbook(file.getInputStream()), type);
             }
             case "xls" -> {
-                return readExcelFile(new HSSFWorkbook(file.getInputStream()));
+                return readExcel(new HSSFWorkbook(file.getInputStream()), type);
             }
             default -> throw new DataUploadException(MenuErrorCode.INVALID_FILE_FORMAT);
         }

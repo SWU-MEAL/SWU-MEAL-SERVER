@@ -12,16 +12,25 @@
     </style>
 </head>
 <body>
+<span>데이터 저장 완료</span>
+<br/>
+<span>Type: </span>
+<span th:text="${type}"></span>
+<br/>
 <table class="table table-striped">
     <thead>
     <tr>
         <th scope="row">날짜</th>
+        <th scope="row">시간</th>
+        <th scope="row">코너</th>
         <th scope="row" colspan="7">식단</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="data : ${result}">
         <td th:text="${data.date}"></td>
+        <td th:text="${data.time.getKey()}"></td>
+        <td th:text="${data.corner != null ? data.corner.getKey() : null}"></td>
         <td th:each="item : ${data.items}">
             <span th:text="${item}"/>
             <br/>
