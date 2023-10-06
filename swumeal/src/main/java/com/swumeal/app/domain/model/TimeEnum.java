@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum TimeEnum {
     BREAKFAST("조식", 3),
     LUNCH("중식", 9),
-    DINNER("석식", 25);
+    DINNER("석식", 27);
 
     private final String key;
     private final int dormStartRow;
