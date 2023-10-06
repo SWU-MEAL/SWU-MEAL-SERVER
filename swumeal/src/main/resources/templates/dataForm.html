@@ -3,12 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>[SWU:BOB] 파일 업로드</title>
+    <style>
+        div {
+            margin: 10px;
+        }
+
+        select {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 
 <body>
 <form th:action="@{/v1/upload/result}" method="POST" enctype="multipart/form-data">
-    <input type="file" th:name="file">
-    <button th:type="submit">제출</button>
+    <div>
+        <input type="file" th:name="file">
+    </div>
+    <div>
+        <label>
+            <select th:name="type">
+                <option th:value="n" disabled selected>식단 유형 선택</option>
+                <option th:value="교직원">교직원 식당</option>
+                <option th:value="샬롬">샬롬하우스</option>
+            </select>
+        </label>
+        <button th:type="submit">제출</button>
+    </div>
 </form>
 </body>
 
