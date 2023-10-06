@@ -1,6 +1,8 @@
 package com.swumeal.app.global.util;
 
-import com.swumeal.app.domain.menu.vo.StaffMenuVo;
+import com.swumeal.app.domain.menu.vo.MenuDataVo;
+import com.swumeal.app.domain.model.CornerEnum;
+import com.swumeal.app.domain.model.MealTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,23 +24,63 @@ class UploadedFileProcessorTest {
     UploadedFileProcessor uploadedFileProcessor;
 
     @Test
-    @DisplayName("엑셀 파일 업로드 테스트")
-    void excelUploadTest() throws IOException {
+    @DisplayName("교직원 엑셀 파일 업로드 테스트")
+    void excelUploadTest_staff() throws IOException {
         // given
         MockMultipartFile file = new MockMultipartFile("xlsx_file", "file.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", new ClassPathResource("static/file.xlsx").getInputStream());
+        MealTypeEnum type = MealTypeEnum.STAFF;
 
         // when
-        LinkedList<StaffMenuVo> result = uploadedFileProcessor.readFile(file);
+        LinkedList<MenuDataVo> result = uploadedFileProcessor.readFile(file, type);
 
         // then
-        assertThat(result.size()).as("[데이터 추출 실패] 추출 결과가 5건이 아님").isEqualTo(5);
-        assertThat(result.get(0).getDate()).as("[데이터 추출 실패] 날짜 값 불일치").isEqualTo("2023-09-18");
-        assertThat(result.get(0).getItems().get(0)).as("[데이터 추출 실패] 메뉴 아이템 값 불일치").isEqualTo("잡곡밥");
-
-        for (StaffMenuVo dto : result) {
+        for (MenuDataVo dto : result) {
             log.info(dto.getDate().toString());
             for (String menu : dto.getItems())
                 log.info(menu);
         }
+
+        assertThat(result.size()).as("[데이터 추출 실패] 추출 결과가 5건이 아님").isEqualTo(5);
+        assertThat(result.get(0).getDate()).as("[데이터 추출 실패] 날짜 값 불일치").isEqualTo("2023-09-18");
+        assertThat(result.get(0).getItems().get(0)).as("[데이터 추출 실패] 메뉴 아이템 값 불일치").isEqualTo("잡곡밥");
+    }
+
+    @Test
+    @DisplayName("샬롬 엑셀 파일 업로드 테스트")
+    void excelUploadTest_dorm() throws IOException {
+        // given
+        MockMultipartFile file = new MockMultipartFile("xlsx_file", "file2.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", new ClassPathResource("static/file2.xlsx").getInputStream());
+        MealTypeEnum type = MealTypeEnum.DORMITORY;
+
+        // when
+        LinkedList<MenuDataVo> result = uploadedFileProcessor.readFile(file, type);
+
+        // then
+        LinkedList<Integer> resultCount = new LinkedList<>();
+        for (int i = 0; i < 5; i++)
+            resultCount.add(0);
+
+        for (MenuDataVo dto : result) {
+            log.info(dto.getDate().toString());
+            for (String menu : dto.getItems())
+                log.info(menu);
+
+            switch (dto.getDate().toString()) {
+                case "Mon Sep 11 00:00:00 KST 2023" -> resultCount.set(0, resultCount.get(0) + 1);
+                case "Tue Sep 12 00:00:00 KST 2023" -> resultCount.set(1, resultCount.get(1) + 1);
+                case "Wed Sep 13 00:00:00 KST 2023" -> resultCount.set(2, resultCount.get(2) + 1);
+                case "Thu Sep 14 00:00:00 KST 2023" -> resultCount.set(3, resultCount.get(3) + 1);
+                default -> resultCount.set(4, resultCount.get(4) + 1);
+            }
+        }
+
+        for (int i = 0; i < 5; i++) {
+            assertThat(resultCount.get(i)).as("[데이터 추출 실패] #" + i + " 추출 결과가 5건이 아님").isEqualTo(5);
+        }
+
+        assertThat(result.size()).as("[데이터 추출 실패] 추출 결과가 25건이 아님").isEqualTo(25);
+        assertThat(result.get(0).getDate()).as("[데이터 추출 실패] 날짜 값 불일치").isEqualTo("2023-09-11");
+        assertThat(result.get(0).getItems().get(0)).as("[데이터 추출 실패] 메뉴 아이템 값 불일치").isEqualTo("야채죽");
+        assertThat(result.get(2).getCorner()).as("[데이터 추출 실패] 메뉴 코너 값 불일치").isEqualTo(CornerEnum.SPECIAL);
     }
 }
