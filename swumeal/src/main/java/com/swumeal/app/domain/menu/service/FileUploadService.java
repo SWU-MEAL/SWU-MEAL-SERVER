@@ -1,7 +1,10 @@
 package com.swumeal.app.domain.menu.service;
 
 import com.swumeal.app.dao.MenuDAO;
-import com.swumeal.app.domain.menu.vo.StaffMenuVo;
+import com.swumeal.app.domain.menu.error.MenuErrorCode;
+import com.swumeal.app.domain.menu.error.exception.MenuApiException;
+import com.swumeal.app.domain.menu.vo.MenuDataVo;
+import com.swumeal.app.domain.model.MealTypeEnum;
 import com.swumeal.app.domain.vo.MenuItemVO;
 import com.swumeal.app.domain.vo.MenuVO;
 import com.swumeal.app.global.util.UploadedFileProcessor;
@@ -20,11 +23,18 @@ public class FileUploadService {
     private final UploadedFileProcessor processor;
     private final MenuDAO menuDAO;
 
-    public LinkedList<StaffMenuVo> uploadData(MultipartFile file) throws IOException {
-        LinkedList<StaffMenuVo> result = processor.readFile(file);
+    public LinkedList<MenuDataVo> uploadData(MultipartFile file, String type) throws IOException {
+        MealTypeEnum typeEnum;
+        switch (type) {
+            case "교직원" -> typeEnum = MealTypeEnum.STAFF;
+            case "샬롬" -> typeEnum = MealTypeEnum.DORMITORY;
+            default -> throw new MenuApiException(MenuErrorCode.INVALID_TYPE);
+        }
 
-        for (StaffMenuVo vo : result) {
-            MenuVO menuVO = new MenuVO(vo.getDate());
+        LinkedList<MenuDataVo> result = processor.readFile(file, typeEnum);
+
+        for (MenuDataVo vo : result) {
+            MenuVO menuVO = new MenuVO(vo);
             menuDAO.save(menuVO);
 
             for (String item : vo.getItems())
