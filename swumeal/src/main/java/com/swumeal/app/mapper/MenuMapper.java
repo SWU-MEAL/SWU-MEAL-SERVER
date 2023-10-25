@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper
 public interface MenuMapper {
     // menu 저장
-    void insertMenu(MenuVO menuVO);
+    Long insertMenu(MenuVO menuVO);
 
     // menu item 저장
     void insertMenuItem(MenuItemVO menuItemVO);
