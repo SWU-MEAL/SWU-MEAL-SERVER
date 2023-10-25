@@ -1,11 +1,12 @@
 package com.swumeal.app.mapper;
 
-import com.swumeal.app.domain.dto.MenuDTO;
+import com.swumeal.app.domain.menu.domain.MenuItemVO;
+import com.swumeal.app.domain.menu.domain.MenuVO;
+import com.swumeal.app.domain.menu.dto.MenuDTO;
 import com.swumeal.app.domain.menu.vo.MenuDataVo;
 import com.swumeal.app.domain.model.MealTypeEnum;
 import com.swumeal.app.domain.model.TimeEnum;
-import com.swumeal.app.domain.vo.MenuItemVO;
-import com.swumeal.app.domain.vo.MenuVO;
+import com.swumeal.app.global.mapper.MenuMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

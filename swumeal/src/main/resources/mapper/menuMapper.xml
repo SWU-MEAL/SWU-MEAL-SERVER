@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.swumeal.app.mapper.MenuMapper">
+<mapper namespace="com.swumeal.app.global.mapper.MenuMapper">
 
     <insert id="insertMenu" parameterType="menuVO" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO Menu(meal_date, meal_type, corner, time)
