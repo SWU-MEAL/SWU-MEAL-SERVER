@@ -101,6 +101,7 @@ class MenuReadServiceTest {
     void findByTime() {
         // given
         String date = LocalDate.now().format(DateTimeFormatter.ISO_DATE);
+        log.info(date);
         String time = "d";
         String item = MENU + "2" + TIME_D + TYPE_A;
         addMockData(date);
