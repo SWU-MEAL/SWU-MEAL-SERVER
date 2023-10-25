@@ -52,7 +52,7 @@ class FileUploadServiceTest {
         fileUploadService.uploadData(file, type);
 
         // then
-        MenuListByDateDto dto = menuDAO.findByDate("2023-09-11");
+        MenuListByDateDto dto = menuDAO.findByDate("2023-10-13");
         assertThat(dto.getResult().get(0).getMenuList().get(0).getType()).as("식단 타입 오류").isEqualTo(type);
     }
 }
