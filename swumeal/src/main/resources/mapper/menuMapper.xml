@@ -2,92 +2,85 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.swumeal.app.mapper.MenuMapper">
 
-    <insert id="insertMenu" parameterType="menuVO" keyProperty="id">
-        <selectKey keyProperty="id" order="BEFORE" resultType="long">
-            select SEQ_MENU.nextval from dual
-        </selectKey>
-        INSERT INTO MENU(id, meal_date, meal_type, corner, time)
-        VALUES (#{id}, TO_DATE(#{mealDate}, 'yyyy-mm-dd'), #{mealType}, #{corner, jdbcType = VARCHAR}, #{time})
+    <insert id="insertMenu" parameterType="menuVO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO Menu(meal_date, meal_type, corner, time)
+        VALUES (STR_TO_DATE(#{mealDate}, '%Y-%m-%d'), #{mealType}, #{corner, jdbcType = VARCHAR}, #{time})
     </insert>
-    <insert id="insertMenuItem" parameterType="menuItemVO" useGeneratedKeys="true"
-            keyProperty="id">
-        <selectKey keyProperty="id" order="BEFORE" resultType="long">
-            select SEQ_MENU_ITEM.nextval from dual
-        </selectKey>
-        INSERT INTO MENU_ITEM(id, menu_id, menu_name)
-        VALUES (#{id}, #{menuId}, #{menuName})
+    <insert id="insertMenuItem" parameterType="menuItemVO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO Menu_item(menu_id, menu_name)
+        VALUES (#{menuId}, #{menuName})
     </insert>
     <select id="select" resultType="menuDTO">
-        SELECT m.id, m.MEAL_DATE, m.MEAL_TYPE, m.CORNER, m."TIME", mi.MENU_NAME
-        FROM MENU m,
-             MENU_ITEM mi
-        WHERE m.ID = mi.MENU_ID
-          AND TRUNC(MEAL_DATE) = TRUNC(CURRENT_DATE)
+        SELECT m.id, m.meal_date, m.meal_type, m.corner, m.time, mi.Menu_NAME
+        FROM Menu m,
+             Menu_item mi
+        WHERE m.id = mi.Menu_id
+          AND meal_date = CURDATE()
     </select>
     <select id="selectAll" resultType="menuDTO">
   <![CDATA[
-        SELECT m.id, m.MEAL_DATE, m.MEAL_TYPE, m.CORNER, m."TIME", mi.MENU_NAME
-        FROM MENU m,
-             MENU_ITEM mi
-        WHERE m.ID = mi.MENU_ID
-          AND MEAL_DATE >= TRUNC(CURRENT_DATE, 'D')
-          AND MEAL_DATE <= TRUNC(CURRENT_DATE, 'D') + 5
+        SELECT m.id, m.meal_date, m.meal_type, m.corner, m.time, mi.menu_name
+        FROM Menu m,
+             Menu_item mi
+        WHERE m.id = mi.Menu_id
+          AND meal_date >= DATE_ADD(CURDATE(), INTERVAL 5 DAY)
+          AND meal_date <= DATE_ADD(CURDATE(), INTERVAL 5 DAY)
         ]]>
     </select>
     <resultMap id="menuByDate" type="menuListByDateDto">
-        <result property="date" column="MEAL_DATE"/>
+        <result property="date" column="meal_date"/>
         <collection property="result" column="time" javaType="ArrayList" ofType="dailyMenuListDto">
-            <result property="time" column="TIME"/>
-            <collection property="menuList" column="ID" javaType="ArrayList" ofType="dailyMenuDto">
-                <id property="menuId" column="ID"/>
-                <result property="type" column="MEAL_TYPE"/>
-                <result property="corner" column="CORNER"/>
-                <collection property="items" column="ID" javaType="ArrayList" ofType="String">
-                    <result column="MENU_NAME"/>
+            <result property="time" column="time"/>
+            <collection property="menuList" column="id" javaType="ArrayList" ofType="dailyMenuDto">
+                <id property="menuId" column="id"/>
+                <result property="type" column="meal_type"/>
+                <result property="corner" column="corner"/>
+                <collection property="items" column="id" javaType="ArrayList" ofType="String">
+                    <result column="menu_name"/>
                 </collection>
             </collection>
         </collection>
     </resultMap>
     <select id="selectByDate" parameterType="String" resultMap="menuByDate">
-        SELECT m.ID,
-               TO_CHAR(m.MEAL_DATE, 'YYYY-MM-DD') AS MEAL_DATE,
-               m.MEAL_TYPE,
-               m.CORNER,
-               m."TIME",
-               mi.MENU_NAME,
+        SELECT m.id,
+               DATE_FORMAT(m.meal_date, '%Y-%m-%d') AS meal_date,
+               m.meal_type,
+               m.corner,
+               m.time,
+               mi.menu_name,
                CASE
                    WHEN m.time = '조식' THEN 1
                    WHEN m.time = '중식' THEN 2
                    ELSE 3
-                   END                            AS time_order
-        FROM MENU m
-                 LEFT JOIN MENU_ITEM mi ON m.ID = mi.MENU_ID
-        WHERE m.MEAL_DATE = TO_DATE(#{date}, 'RR/MM/DD')
-        ORDER BY time_order, m.ID, mi.ID
+                   END                              AS time_order
+        FROM Menu m
+                 LEFT JOIN Menu_item mi ON m.id = mi.Menu_id
+        WHERE m.meal_date = STR_TO_DATE(#{date}, '%Y-%m-%d')
+        ORDER BY time_order, m.id, mi.id
     </select>
     <resultMap id="menuByTime" type="menuListByTimeDto">
-        <result property="date" column="MEAL_DATE"/>
-        <result property="time" column="TIME"/>
-        <collection property="result" column="ID" javaType="ArrayList" ofType="dailyMenuDto">
-            <id property="menuId" column="ID"/>
-            <result property="type" column="MEAL_TYPE"/>
-            <result property="corner" column="CORNER"/>
-            <collection property="items" column="ID" javaType="ArrayList" ofType="String">
-                <result column="MENU_NAME"/>
+        <result property="date" column="meal_date"/>
+        <result property="time" column="time"/>
+        <collection property="result" column="id" javaType="ArrayList" ofType="dailyMenuDto">
+            <id property="menuId" column="id"/>
+            <result property="type" column="meal_type"/>
+            <result property="corner" column="corner"/>
+            <collection property="items" column="id" javaType="ArrayList" ofType="String">
+                <result column="menu_name"/>
             </collection>
         </collection>
     </resultMap>
     <select id="selectByTime" parameterType="String" resultMap="menuByTime">
-        SELECT m.ID,
-               TO_CHAR(m.MEAL_DATE, 'YYYY-MM-DD') AS MEAL_DATE,
-               m.MEAL_TYPE,
-               m.CORNER,
-               m."TIME",
-               mi.MENU_NAME
-        FROM MENU m
-                 LEFT JOIN MENU_ITEM mi ON m.ID = mi.MENU_ID
-        WHERE TRUNC(m.MEAL_DATE) = TRUNC(CURRENT_DATE)
-          AND "TIME" = #{time}
-        ORDER BY MEAL_TYPE, m.ID, mi.ID
+        SELECT m.id,
+               DATE_FORMAT(m.meal_date, '%Y-%m-%d') AS meal_date,
+               m.meal_type,
+               m.corner,
+               m.time,
+               mi.menu_name
+        FROM Menu m
+                 LEFT JOIN Menu_item mi ON m.id = mi.Menu_id
+        WHERE m.meal_date = CURDATE()
+          AND time = #{time}
+        ORDER BY meal_type, m.id, mi.id
     </select>
 </mapper>
