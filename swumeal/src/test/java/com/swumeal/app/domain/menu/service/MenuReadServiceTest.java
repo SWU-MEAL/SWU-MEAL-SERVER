@@ -1,13 +1,13 @@
 package com.swumeal.app.domain.menu.service;
 
-import com.swumeal.app.dao.MenuDAO;
+import com.swumeal.app.domain.menu.domain.MenuDAO;
+import com.swumeal.app.domain.menu.domain.MenuItemVO;
+import com.swumeal.app.domain.menu.domain.MenuVO;
 import com.swumeal.app.domain.menu.dto.DailyMenuDto;
 import com.swumeal.app.domain.menu.dto.DailyMenuListDto;
 import com.swumeal.app.domain.menu.dto.MenuListByDateDto;
 import com.swumeal.app.domain.menu.dto.MenuListByTimeDto;
 import com.swumeal.app.domain.menu.dto.request.DateRequestDto;
-import com.swumeal.app.domain.vo.MenuItemVO;
-import com.swumeal.app.domain.vo.MenuVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

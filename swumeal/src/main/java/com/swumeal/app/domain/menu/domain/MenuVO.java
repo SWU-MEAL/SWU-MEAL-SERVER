@@ -1,4 +1,4 @@
-package com.swumeal.app.domain.vo;
+package com.swumeal.app.domain.menu.domain;
 
 import com.swumeal.app.domain.menu.vo.MenuDataVo;
 import lombok.Data;

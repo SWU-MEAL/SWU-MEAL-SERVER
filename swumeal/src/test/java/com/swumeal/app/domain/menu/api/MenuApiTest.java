@@ -1,8 +1,8 @@
 package com.swumeal.app.domain.menu.api;
 
-import com.swumeal.app.dao.MenuDAO;
-import com.swumeal.app.domain.vo.MenuItemVO;
-import com.swumeal.app.domain.vo.MenuVO;
+import com.swumeal.app.domain.menu.domain.MenuDAO;
+import com.swumeal.app.domain.menu.domain.MenuItemVO;
+import com.swumeal.app.domain.menu.domain.MenuVO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.swumeal.app.domain.vo;
+package com.swumeal.app.domain.menu.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
