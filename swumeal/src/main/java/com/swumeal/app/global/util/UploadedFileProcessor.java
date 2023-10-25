@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -52,7 +53,7 @@ public class UploadedFileProcessor {
 
         for (int i = 0; i < MENU_COUNT; i++) {
             // 데이터 미존재 (공휴일 등)
-            Cell cell = worksheet.getRow(startRow + 2).getCell(cellNum);
+            Cell cell = worksheet.getRow(startRow).getCell(cellNum);
             if (isBlankCell(cell))
                 continue;
 
@@ -73,7 +74,7 @@ public class UploadedFileProcessor {
             }
 
             result.add(MenuDataVo.builder()
-                    .date(date)
+                    .date(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
                     .time(time)
                     .type(type)
                     .corner(corner)
