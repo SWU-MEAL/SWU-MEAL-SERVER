@@ -57,6 +57,44 @@ class UploadedFileProcessorTest {
 
         // then
         LinkedList<Integer> resultCount = new LinkedList<>();
+        for (int i = 0; i < 4; i++)
+            resultCount.add(0);
+
+        for (MenuDataVo dto : result) {
+            log.info(dto.getDate().toString());
+            for (String menu : dto.getItems())
+                log.info(menu);
+
+            switch (dto.getDate().toString()) {
+                case "2023-10-10" -> resultCount.set(0, resultCount.get(0) + 1);
+                case "2023-10-11" -> resultCount.set(1, resultCount.get(1) + 1);
+                case "2023-10-12" -> resultCount.set(2, resultCount.get(2) + 1);
+                default -> resultCount.set(3, resultCount.get(3) + 1);
+            }
+        }
+
+        for (int i = 0; i < 4; i++) {
+            assertThat(resultCount.get(i)).as("[데이터 추출 실패] #" + i + " 추출 결과가 5건이 아님").isEqualTo(5);
+        }
+
+        assertThat(result.size()).as("[데이터 추출 실패] 추출 결과가 20건이 아님").isEqualTo(20);
+        assertThat(result.get(0).getDate()).as("[데이터 추출 실패] 날짜 값 불일치").isEqualTo("2023-10-10");
+        assertThat(result.get(0).getItems().get(0)).as("[데이터 추출 실패] 메뉴 아이템 값 불일치").isEqualTo("참치야채비빔밥");
+        assertThat(result.get(2).getCorner()).as("[데이터 추출 실패] 메뉴 코너 값 불일치").isEqualTo(CornerEnum.SPECIAL);
+    }
+
+    @Test
+    @DisplayName("샬롬 엑셀 파일 ver2. 업로드 테스트")
+    void excelUploadTest_dorm2() throws IOException {
+        // given
+        MockMultipartFile file = new MockMultipartFile("xlsx_file", "file3.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", new ClassPathResource("static/file3.xlsx").getInputStream());
+        MealTypeEnum type = MealTypeEnum.DORMITORY;
+
+        // when
+        LinkedList<MenuDataVo> result = uploadedFileProcessor.readFile(file, type);
+
+        // then
+        LinkedList<Integer> resultCount = new LinkedList<>();
         for (int i = 0; i < 5; i++)
             resultCount.add(0);
 
@@ -66,20 +104,20 @@ class UploadedFileProcessorTest {
                 log.info(menu);
 
             switch (dto.getDate().toString()) {
-                case "Mon Sep 11 00:00:00 KST 2023" -> resultCount.set(0, resultCount.get(0) + 1);
-                case "Tue Sep 12 00:00:00 KST 2023" -> resultCount.set(1, resultCount.get(1) + 1);
-                case "Wed Sep 13 00:00:00 KST 2023" -> resultCount.set(2, resultCount.get(2) + 1);
-                case "Thu Sep 14 00:00:00 KST 2023" -> resultCount.set(3, resultCount.get(3) + 1);
+                case "2023-10-23" -> resultCount.set(0, resultCount.get(0) + 1);
+                case "2023-10-24" -> resultCount.set(1, resultCount.get(1) + 1);
+                case "2023-10-25" -> resultCount.set(2, resultCount.get(2) + 1);
+                case "2023-10-26" -> resultCount.set(3, resultCount.get(3) + 1);
                 default -> resultCount.set(4, resultCount.get(4) + 1);
             }
         }
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             assertThat(resultCount.get(i)).as("[데이터 추출 실패] #" + i + " 추출 결과가 5건이 아님").isEqualTo(5);
         }
 
         assertThat(result.size()).as("[데이터 추출 실패] 추출 결과가 25건이 아님").isEqualTo(25);
-        assertThat(result.get(0).getDate()).as("[데이터 추출 실패] 날짜 값 불일치").isEqualTo("2023-09-11");
+        assertThat(result.get(0).getDate()).as("[데이터 추출 실패] 날짜 값 불일치").isEqualTo("2023-10-23");
         assertThat(result.get(0).getItems().get(0)).as("[데이터 추출 실패] 메뉴 아이템 값 불일치").isEqualTo("야채죽");
         assertThat(result.get(2).getCorner()).as("[데이터 추출 실패] 메뉴 코너 값 불일치").isEqualTo(CornerEnum.SPECIAL);
     }
