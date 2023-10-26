@@ -16,9 +16,9 @@ import java.util.LinkedList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 @SpringBootTest
 @DisplayName("ExcelUploadHandler 테스트")
+@Slf4j
 class UploadedFileProcessorTest {
     @Autowired
     UploadedFileProcessor uploadedFileProcessor;

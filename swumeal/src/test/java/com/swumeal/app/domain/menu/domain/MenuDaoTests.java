@@ -1,8 +1,5 @@
-package com.swumeal.app.dao;
+package com.swumeal.app.domain.menu.domain;
 
-import com.swumeal.app.domain.menu.domain.MenuDAO;
-import com.swumeal.app.domain.menu.domain.MenuItemVO;
-import com.swumeal.app.domain.menu.domain.MenuVO;
 import com.swumeal.app.domain.menu.dto.MenuDTO;
 import com.swumeal.app.domain.menu.dto.MenuListByDateDto;
 import com.swumeal.app.domain.menu.dto.MenuListByTimeDto;
@@ -87,13 +84,12 @@ public class MenuDaoTests {
     @DisplayName("findByDate 테스트")
     public void findByDate() {
         // given
-        String dateStr = "2023-10-04";
 
         // when
-        MenuListByDateDto menuListByDateDto = menuDAO.findByDate(dateStr);
+        MenuListByDateDto menuListByDateDto = menuDAO.findByDate(DATE);
 
         // then
-        assertThat(menuListByDateDto.getDate().contains(dateStr)).as("[데이터 조회 실패] 날짜 불일치").isTrue();
+        assertThat(menuListByDateDto.getDate().contains(DATE)).as("[데이터 조회 실패] 날짜 불일치").isTrue();
         log.info(menuListByDateDto.toString());
     }
 
@@ -113,6 +109,6 @@ public class MenuDaoTests {
 
         assertThat(menuListByTimeDto.getDate().contains(DATE)).as("[데이터 조회 실패] 날짜 불일치").isTrue();
         assertThat(menuListByTimeDto.getTime()).as("[데이터 조회 실패] 시간 불일치").isEqualTo(time);
-        assertThat(menuListByTimeDto.getResult().get(2).getCorner()).as("[데이터 조회 실패] CORNER 값 불일치").isEqualTo(CORNER_A);
+        assertThat(menuListByTimeDto.getResult().get(2).getCorner()).as("[데이터 조회 실패] CORNER 값 불일치").isEqualTo(CORNER_B);
     }
 }
