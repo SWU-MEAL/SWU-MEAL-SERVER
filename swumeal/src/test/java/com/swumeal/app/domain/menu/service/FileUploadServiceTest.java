@@ -1,6 +1,6 @@
 package com.swumeal.app.domain.menu.service;
 
-import com.swumeal.app.dao.MenuDAO;
+import com.swumeal.app.domain.menu.domain.MenuDAO;
 import com.swumeal.app.domain.menu.dto.MenuListByDateDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -52,7 +52,7 @@ class FileUploadServiceTest {
         fileUploadService.uploadData(file, type);
 
         // then
-        MenuListByDateDto dto = menuDAO.findByDate("2023-09-11");
+        MenuListByDateDto dto = menuDAO.findByDate("2023-10-13");
         assertThat(dto.getResult().get(0).getMenuList().get(0).getType()).as("식단 타입 오류").isEqualTo(type);
     }
 }

@@ -1,11 +1,9 @@
-package com.swumeal.app.dao;
+package com.swumeal.app.domain.menu.domain;
 
-import com.swumeal.app.domain.dto.MenuDTO;
+import com.swumeal.app.domain.menu.dto.MenuDTO;
 import com.swumeal.app.domain.menu.dto.MenuListByDateDto;
 import com.swumeal.app.domain.menu.dto.MenuListByTimeDto;
-import com.swumeal.app.domain.vo.MenuItemVO;
-import com.swumeal.app.domain.vo.MenuVO;
-import com.swumeal.app.mapper.MenuMapper;
+import com.swumeal.app.global.mapper.MenuMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

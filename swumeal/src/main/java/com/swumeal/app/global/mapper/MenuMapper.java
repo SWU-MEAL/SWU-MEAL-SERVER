@@ -1,10 +1,10 @@
-package com.swumeal.app.mapper;
+package com.swumeal.app.global.mapper;
 
-import com.swumeal.app.domain.dto.MenuDTO;
+import com.swumeal.app.domain.menu.domain.MenuItemVO;
+import com.swumeal.app.domain.menu.domain.MenuVO;
+import com.swumeal.app.domain.menu.dto.MenuDTO;
 import com.swumeal.app.domain.menu.dto.MenuListByDateDto;
 import com.swumeal.app.domain.menu.dto.MenuListByTimeDto;
-import com.swumeal.app.domain.vo.MenuItemVO;
-import com.swumeal.app.domain.vo.MenuVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper
 public interface MenuMapper {
     // menu 저장
-    void insertMenu(MenuVO menuVO);
+    Long insertMenu(MenuVO menuVO);
 
     // menu item 저장
     void insertMenuItem(MenuItemVO menuItemVO);

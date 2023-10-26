@@ -1,4 +1,4 @@
-package com.swumeal.app.controller;
+package com.swumeal.app.domain.mypage.api;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/mypage/*")
 public class MypageController {
     @GetMapping("version")
-    public void goToVersion(){;}
+    public void goToVersion() {
+        ;
+    }
 
     @GetMapping("terms")
-    public void goToTerms(){;}
+    public void goToTerms() {
+        ;
+    }
 
 }

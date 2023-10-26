@@ -2,9 +2,9 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0/EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <typeAlias type="com.swumeal.app.domain.vo.MenuVO" alias="menuVO"/>
-        <typeAlias type="com.swumeal.app.domain.vo.MenuItemVO" alias="menuItemVO"/>
-        <typeAlias type="com.swumeal.app.domain.dto.MenuDTO" alias="menuDTO"/>
+        <typeAlias type="com.swumeal.app.domain.menu.domain.MenuVO" alias="menuVO"/>
+        <typeAlias type="com.swumeal.app.domain.menu.domain.MenuItemVO" alias="menuItemVO"/>
+        <typeAlias type="com.swumeal.app.domain.menu.dto.MenuDTO" alias="menuDTO"/>
         <typeAlias type="com.swumeal.app.domain.menu.dto.MenuListByDateDto" alias="menuListByDateDto"/>
         <typeAlias type="com.swumeal.app.domain.menu.dto.MenuListByTimeDto" alias="menuListByTimeDto"/>
         <typeAlias type="com.swumeal.app.domain.menu.dto.DailyMenuDto" alias="dailyMenuDto"/>

@@ -1,4 +1,4 @@
-package com.swumeal.app.domain.vo;
+package com.swumeal.app.domain.menu.domain;
 
 import com.swumeal.app.domain.menu.vo.MenuDataVo;
 import lombok.Data;
@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 @Slf4j
@@ -21,10 +20,7 @@ public class MenuVO {
     private String time;
 
     public MenuVO(MenuDataVo vo) {
-        this.mealDate = vo.getDate().toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate()
-                .format(DateTimeFormatter.ISO_DATE);
+        this.mealDate = vo.getDate().format(DateTimeFormatter.ISO_DATE);
         this.mealType = vo.getType().getKey();
         this.corner = vo.getCorner() == null ? null : vo.getCorner().getKey();
         this.time = vo.getTime().getKey();

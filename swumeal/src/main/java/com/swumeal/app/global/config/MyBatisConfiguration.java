@@ -1,4 +1,4 @@
-package com.swumeal.app.config;
+package com.swumeal.app.global.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -20,7 +20,7 @@ public class MyBatisConfiguration {
 
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource.hikari")
-    public HikariConfig hikariConfig(){
+    public HikariConfig hikariConfig() {
         return new HikariConfig();
     }
 

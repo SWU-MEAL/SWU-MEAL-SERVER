@@ -1,10 +1,11 @@
 package com.swumeal.app.dao;
 
-import com.swumeal.app.domain.dto.MenuDTO;
+import com.swumeal.app.domain.menu.domain.MenuDAO;
+import com.swumeal.app.domain.menu.domain.MenuItemVO;
+import com.swumeal.app.domain.menu.domain.MenuVO;
+import com.swumeal.app.domain.menu.dto.MenuDTO;
 import com.swumeal.app.domain.menu.dto.MenuListByDateDto;
 import com.swumeal.app.domain.menu.dto.MenuListByTimeDto;
-import com.swumeal.app.domain.vo.MenuItemVO;
-import com.swumeal.app.domain.vo.MenuVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -109,7 +110,7 @@ public class MenuDaoTests {
         log.info(DATE);
         log.info(menuListByTimeDto.getDate());
         log.info(menuListByTimeDto.toString());
-        
+
         assertThat(menuListByTimeDto.getDate().contains(DATE)).as("[데이터 조회 실패] 날짜 불일치").isTrue();
         assertThat(menuListByTimeDto.getTime()).as("[데이터 조회 실패] 시간 불일치").isEqualTo(time);
         assertThat(menuListByTimeDto.getResult().get(2).getCorner()).as("[데이터 조회 실패] CORNER 값 불일치").isEqualTo(CORNER_A);

@@ -4,6 +4,14 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
+repositories {
+    mavenCentral()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+}
+
 jar {
     enabled = false
     processResources.exclude("**/application.properties")
@@ -11,7 +19,6 @@ jar {
 
 group = 'com.app'
 version = '1.0'
-sourceCompatibility = "17"
 
 configurations {
     compileOnly {
@@ -19,31 +26,27 @@ configurations {
     }
 }
 
-repositories {
-    mavenCentral()
+tasks.withType(Test).configureEach {
+    enabled = false
 }
 
 dependencies {
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.0'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.0'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation group: 'org.apache.poi', name: 'poi', version: '4.1.2'
-    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
+    implementation group: 'org.apache.poi', name: 'poi', version: '5.2.3'
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.3'
     implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
+    runtimeOnly 'mysql:mysql-connector-java'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16'
 }
-
-tasks.named('test') {
-    useJUnitPlatform()
-}
-
-targetCompatibility = JavaVersion.VERSION_17

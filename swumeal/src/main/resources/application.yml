@@ -9,8 +9,8 @@ spring:
   # MyBatis
   datasource:
     hikari:
-      driver-class-name: oracle.jdbc.OracleDriver
-      jdbc-url: jdbc:oracle:thin:@//${DATABASE_URL}
+      driver-class-name: ${DATABASE_DRIVER_CLASS}
+      jdbc-url: ${DATABASE_URL}
       username: ${DATABASE_USER}
       password: ${DATABASE_PASSWORD}
   # Thymeleaf
