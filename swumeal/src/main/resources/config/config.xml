@@ -9,6 +9,10 @@
         <typeAlias type="com.swumeal.app.domain.menu.dto.MenuListByTimeDto" alias="menuListByTimeDto"/>
         <typeAlias type="com.swumeal.app.domain.menu.dto.DailyMenuDto" alias="dailyMenuDto"/>
         <typeAlias type="com.swumeal.app.domain.menu.dto.DailyMenuListDto" alias="dailyMenuListDto"/>
+        <typeAlias type="com.swumeal.app.domain.mypage.dto.TermsDTO" alias="termsDTO"/>
+        <typeAlias type="com.swumeal.app.domain.mypage.dto.PolicyDTO" alias="policyDTO"/>
+        <typeAlias type="com.swumeal.app.domain.mypage.domain.TermsVO" alias="termsVO"/>
+        <typeAlias type="com.swumeal.app.domain.mypage.domain.PolicyVO" alias="policyVO"/>
     </typeAliases>
 
 </configuration>
