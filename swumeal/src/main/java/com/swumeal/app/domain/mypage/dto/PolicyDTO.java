@@ -16,7 +16,7 @@ public class PolicyDTO {
         StringBuilder stringBuilder = new StringBuilder();
 
         for (PolicyVO vo : policyList) {
-            if (vo.getNum() == 0) {
+            if (vo.getNum() != null && vo.getNum() == 0) {
                 stringBuilder.append(vo.getContent())
                         .append("\n");
             } else {
